@@ -1,5 +1,6 @@
 {
     "name": "Minos",
+    "version": "1.1.0",
     "description": "Stack shapes efficiently before the well fills!",
     "dependencies": {
         "device": "*",

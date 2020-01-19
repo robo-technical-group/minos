@@ -8,6 +8,7 @@ Tetris® is a registered trademark of The Tetris Company.
 
 ## TODO
 
+- [X] BUG: Namespace conflict with `settings` object. (Fixed - version 1.2.)
 - [X] BUG: Game ends if a player attempts to move a shape off-screen before piece is fully visible. (Fixed - version 1.1.)
 - [X] BUG: Player can move a shape into a column outside of well when shape  is in negative-row space. (Fixed; version 1.1.)
 - [X] BUG: Game is only using pentominoes if player selects "Both" for game shapes. (FIXED; version 1.1.)
