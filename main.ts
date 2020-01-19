@@ -42,7 +42,7 @@ interface PolyominoSprite {
 /**
  * Constants
  */
-const VERSION: string = '1.1'
+const VERSION: string = '1.2'
 
 const AUTODROP_INTERVAL: number = 25
 const COLOR_BG: number = Color.Black
@@ -218,7 +218,7 @@ let nextLevel: number = 0
 let nextPoly: PolyominoSprite = null
 let nextPolyLabel: InfoSprite = null
 let numFlips: number = 0
-let settings: OptionScreenCollection = null
+let settingsScreen: OptionScreenCollection = null
 let splashScreen: SplashScreens = null
 
 /**
@@ -253,7 +253,7 @@ function startGame(): void {
 function startSettings(): void {
     gameMode = GameMode.NotReady
     splashScreen.destroySprites()
-    settings.build()
+    settingsScreen.build()
     gameMode = GameMode.Settings
 }   // startSettings()
 
@@ -280,9 +280,9 @@ game.onUpdate(function () {
             break
 
         case GameMode.Settings:
-            if (game.runtime() >= settings.nextTime) {
-                settings.rotate()
-            }   // if (game.runtime() >= settings.nextTime)
+            if (game.runtime() >= settingsScreen.nextTime) {
+                settingsScreen.rotate()
+            }   // if (game.runtime() >= settingsScreen.nextTime)
             break
     }   // switch (gameMode)
 })  // game.onUpdate()
@@ -303,10 +303,10 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
             break
 
         case GameMode.Settings:
-            settings.select()
-            if (settings.done) {
+            settingsScreen.select()
+            if (settingsScreen.done) {
                 startGame()
-            }   // if (settings.done)
+            }   // if (settingsScreen.done)
             break
     }   // switch (gameMode)
 })  // controller.A.onEvent()
@@ -334,7 +334,7 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
             break
 
         case GameMode.Settings:
-            settings.moveCursorDown()
+            settingsScreen.moveCursorDown()
             break
     }   // switch (gameMode)
 })  // controller.down.onEvent()
@@ -360,7 +360,7 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
             break
 
         case GameMode.Settings:
-            settings.moveCursorLeft()
+            settingsScreen.moveCursorLeft()
             break
     }   // switch (gameMode)
 })  // controller.left.onEvent()
@@ -386,7 +386,7 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
             break
 
         case GameMode.Settings:
-            settings.moveCursorRight()
+            settingsScreen.moveCursorRight()
             break
     }   // switch (gameMode)
 })  // controller.right.onEvent()
@@ -416,7 +416,7 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
             break
 
         case GameMode.Settings:
-            settings.moveCursorUp()
+            settingsScreen.moveCursorUp()
             break
     }   // switch (gameMode)
 })  // controller.up.onEvent()
@@ -449,19 +449,19 @@ function buildSettingsScreen(): void {
     for (let s of TEXT_HEADLINES) {
         headlines.push(s)
     }   // for (s)
-    settings = new OptionScreenCollection(
+    settingsScreen = new OptionScreenCollection(
         TEXT_TITLES, Color.Yellow,
         headlines, Color.Brown
     )
-    settings.titles.font = image.font8
-    settings.headlines.font = image.font5
-    settings.footer.font = image.font5
-    settings.doneText = TEXT_DONE
-    settings.addScreen(TEXT_OPTIONS_POLYS_TAB, TEXT_OPTIONS_POLYS, false)
-    settings.addScreen(TEXT_OPTIONS_SPEED_TAB, TEXT_OPTIONS_SPEED, false)
+    settingsScreen.titles.font = image.font8
+    settingsScreen.headlines.font = image.font5
+    settingsScreen.footer.font = image.font5
+    settingsScreen.doneText = TEXT_DONE
+    settingsScreen.addScreen(TEXT_OPTIONS_POLYS_TAB, TEXT_OPTIONS_POLYS, false)
+    settingsScreen.addScreen(TEXT_OPTIONS_SPEED_TAB, TEXT_OPTIONS_SPEED, false)
     // Default settings: use tetrominoes with standard drop speed.
-    settings.setSelectionForScreen(0, 0, 0)
-    settings.setSelectionForScreen(1, 0, 0)
+    settingsScreen.setSelectionForScreen(0, 0, 0)
+    settingsScreen.setSelectionForScreen(1, 0, 0)
 }   // buildSettingsScreen()
 
 function buildSplashScreen(): void {
@@ -817,7 +817,7 @@ function initGameSprites(): void {
  * Initialize the gameShapes variable.
  */
 function initShapes(): void {
-    switch (settings.getSelectionForScreen(0, 0)) {
+    switch (settingsScreen.getSelectionForScreen(0, 0)) {
         case 0:
             gameShapes = TETROMINOES
             break
@@ -829,7 +829,7 @@ function initShapes(): void {
         case 2:
             gameShapes = TETROMINOES.concat(PENTOMINOES)
             break
-    }   // switch (settings.getSelectionForScreen(0, 0))
+    }   // switch (settingsScreen.getSelectionForScreen(0, 0))
 }   // initShapes()
 
 /**
@@ -842,7 +842,7 @@ function initVars(): void {
     autoDrop = false
     info.setScore(0)
 
-    let startLevel: number = STARTING_LEVELS[settings.getSelectionForScreen(1, 0)]
+    let startLevel: number = STARTING_LEVELS[settingsScreen.getSelectionForScreen(1, 0)]
     dropInterval = Math.round(DROP_INTERVAL_INITIAL * LEVEL_TIMER_FACTOR ** (startLevel - 1))
     info.setLifeImage(img`
         2 . 2 . 2 . 2 .
